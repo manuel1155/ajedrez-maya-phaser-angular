@@ -9,27 +9,51 @@ export class MainMenu extends Scene
     title: GameObjects.Text;
     logoTween: Phaser.Tweens.Tween | null;
 
-    constructor ()
+    constructor()
     {
         super('MainMenu');
     }
 
-    create ()
+    create()
     {
-        this.background = this.add.image(512, 384, 'background');
+        this.background = this.add.image(385, 512, 'bg_mainMenu');
 
-        this.logo = this.add.image(512, 300, 'logo').setDepth(100);
+        this.logo = this.add.image(this.scale.width / 2, this.scale.height * 0.2, 'logo_am').setDepth(100);
 
-        this.title = this.add.text(512, 460, 'Main Menu', {
+        this.title = this.add.text(this.scale.width / 2, this.scale.height * 0.35, 'Un juego de estategia', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setOrigin(0.5).setDepth(100);
 
+        this.title = this.add.text(this.scale.width / 2, this.scale.height * 0.4, '!!! 100% Mexicano !!!', {
+            fontFamily: 'Arial', fontSize: 38, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 5,
+            align: 'center'
+        }).setOrigin(0.5).setDepth(100);
+
+        this.title = this.add.text(this.scale.width / 2, this.scale.height * 0.45, 'Que promueve su legado cultural', {
+            fontFamily: 'Arial', fontSize: 38, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 5,
+            align: 'center'
+        }).setOrigin(0.5).setDepth(100);
+
+        const loginBtn = this.add.text(this.scale.width / 2, this.scale.height * 0.60, 'Inicia sesión con Google', {
+            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 5,
+            align: 'center',
+            backgroundColor: '#4285F4',
+            padding: { x: 20, y: 10 }
+        }).setOrigin(0.5).setInteractive().setDepth(100);
+
+        loginBtn.on('pointerdown', () =>
+        {
+            console.log('Booton para inicio de sesión')
+        });
         EventBus.emit('current-scene-ready', this);
     }
-    
-    changeScene ()
+
+    changeScene()
     {
         if (this.logoTween)
         {
@@ -40,7 +64,7 @@ export class MainMenu extends Scene
         this.scene.start('Game');
     }
 
-    moveLogo (vueCallback: ({ x, y }: { x: number, y: number }) => void)
+    moveLogo(vueCallback: ({ x, y }: { x: number, y: number }) => void)
     {
         if (this.logoTween)
         {
@@ -52,7 +76,7 @@ export class MainMenu extends Scene
             {
                 this.logoTween.play();
             }
-        } 
+        }
         else
         {
             this.logoTween = this.tweens.add({
@@ -61,7 +85,8 @@ export class MainMenu extends Scene
                 y: { value: 80, duration: 1500, ease: 'Sine.easeOut' },
                 yoyo: true,
                 repeat: -1,
-                onUpdate: () => {
+                onUpdate: () =>
+                {
                     if (vueCallback)
                     {
                         vueCallback({
